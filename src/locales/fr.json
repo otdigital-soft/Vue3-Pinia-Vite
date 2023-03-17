@@ -1,0 +1,30 @@
+{
+  "team" : "équipe",
+  "settings" : "réglages",
+  "options" : "options",
+  "Soumettre": "Soumettre",
+  "Annuler": "Annuler",
+  "Crée le": "Crée le",
+  "Livraison le": "Livraison le",
+  "Livraison prévue": "Livraison prévue",
+  "Description": "Description",
+  "Statut": "Statut",
+  "Titre": "Titre",
+  "Prioritée": "Prioritée",
+  "Pièces jointes": "Pièces jointes",
+  "Livraison souhaité": "Livraison souhaité",
+  "Rechercher parmi les membres": "Rechercher parmi les membres",
+  "menu": {
+    "en": "English",
+    "ru": "Russian",
+    "home": "Home",
+    "about": "About"
+  },
+  "main": {
+    "welcome": "Bonjour de {company}!",
+    "new_message": "no messages | one message | {count} messages"
+  },
+  "about": {
+    "welcome": "Welcome to the About page!"
+  }
+}

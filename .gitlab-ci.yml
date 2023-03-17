@@ -1,0 +1,73 @@
+stages:
+  - build
+  - deploy
+
+build:develop:
+  stage: build
+  image: node:14
+  variables:
+    NODE_ENV: "production"
+  cache:
+    key:
+      files:
+        - package-lock.json
+      prefix: npm
+    paths:
+      - node_modules/
+  script:
+    - npm install --production=false
+    - npm run build
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - dist
+  only:
+    - develop
+
+build:main:
+  stage: build
+  image: node:14
+  variables:
+    NODE_ENV: "production"
+  cache:
+    key:
+      files:
+        - package-lock.json
+      prefix: npm
+    paths:
+      - node_modules/
+  script:
+    - npm install --production=false
+    - npm run build
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - dist
+  only:
+    - main
+
+deploy:develop:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - apk update && apk add openssh-client rsync
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | ssh-add -
+    - mkdir -p ~/.ssh && touch ~/.ssh/known_hosts && chmod 700 ~/.ssh
+    - ssh-keyscan -p 54385 193.70.0.88 >> ~/.ssh/known_hosts
+    - rsync -arvz -e 'ssh -p 54385' --progress --delete dist/ ubuntu@193.70.0.88:/var/www/uat-bug/html/
+  only:
+    - develop
+
+deploy:main:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - apk update && apk add openssh-client rsync
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | ssh-add -
+    - mkdir -p ~/.ssh && touch ~/.ssh/known_hosts && chmod 700 ~/.ssh
+    - ssh-keyscan -p 54385 193.70.0.88 >> ~/.ssh/known_hosts
+    - rsync -arvz -e 'ssh -p 54385' --progress --delete dist/ ubuntu@193.70.0.88:/var/www/bug/html/
+  only:
+    - main
